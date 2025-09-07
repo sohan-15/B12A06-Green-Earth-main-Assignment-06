@@ -39,9 +39,6 @@ const fetchWithSpinner = async (url) => {
   }
 };
 
-// ==============================
-// Step 1: Load Categories
-// ==============================
 const loadCategories = async () => {
   console.log("Step 1: Loading categories...");
   const data = await fetchWithSpinner(
@@ -53,14 +50,12 @@ const loadCategories = async () => {
   const categoriesContainer = document.getElementById("categories");
   categoriesContainer.innerHTML = "";
 
-  // Add "All Trees" button
   const allBtn = document.createElement("button");
   allBtn.textContent = "All Trees";
   allBtn.className = "category-btn bg-green-200 p-2 rounded";
   allBtn.dataset.id = "all";
   categoriesContainer.appendChild(allBtn);
 
-  // Dynamic category buttons
   categories.forEach((cat) => {
     const btn = document.createElement("button");
     btn.textContent = cat.category_name;
@@ -73,9 +68,6 @@ const loadCategories = async () => {
   loadTreesByCategory("all");
 };
 
-// ==============================
-// Step 2: Load Trees by Category
-// ==============================
 const loadTreesByCategory = async (id) => {
   console.log("Step 2: Loading trees for category:", id);
   let url = "https://openapi.programming-hero.com/api/plants";
@@ -107,14 +99,10 @@ const loadTreesByCategory = async (id) => {
     `;
     treeContainer.appendChild(card);
 
-    // Modal click
     card.querySelector("h2").onclick = () => showTreeModal(tree);
   });
 };
 
-// ==============================
-// Step 3: Cart Functionality
-// ==============================
 let cart = [];
 const updateCart = () => {
   const cartContainer = document.getElementById("cart-container");
@@ -174,9 +162,6 @@ document.getElementById("tree-cards").addEventListener("click", (e) => {
   }
 });
 
-// ==============================
-// Step 4: Modal Functionality
-// ==============================
 const modal = document.getElementById("tree-modal");
 const modalContent = document.getElementById("modal-content");
 const closeModalBtn = document.getElementById("close-modal");
@@ -198,9 +183,6 @@ const showTreeModal = (tree) => {
 
 closeModalBtn.onclick = () => modal.classList.add("hidden");
 
-// ==============================
-// Step 5: Category Click Events
-// ==============================
 document.getElementById("categories").addEventListener("click", (e) => {
   if (e.target.classList.contains("category-btn")) {
     const id = e.target.dataset.id;
@@ -209,9 +191,6 @@ document.getElementById("categories").addEventListener("click", (e) => {
   }
 });
 
-// ==============================
-// Step 6: Form Validation (Footer)
-// ==============================
 const donateForm = document.querySelector("footer form") || null;
 if (donateForm) {
   donateForm.addEventListener("submit", (e) => {
@@ -243,7 +222,6 @@ document.getElementById("tree-cards").addEventListener("click", (e) => {
     console.log("Added to cart:", treeItem);
     updateCart();
 
-    // ✅ Alert added
     alert(`🌳 "${name}" added to cart!`);
   }
 });
