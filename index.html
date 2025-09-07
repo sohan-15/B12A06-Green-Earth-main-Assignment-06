@@ -22,8 +22,23 @@
   <body>
     <nav class="bg-green-700">
       <section class="py-5 px-6 flex items-center justify-between">
-        <div>
-          <h1 class="text-white font-bold text-xl">Green Earth</h1>
+        <div class="relative group">
+          <h1
+            id="logo-name"
+            class="text-white font-bold text-xl cursor-pointer transition-transform duration-500"
+          >
+            SR SOHAN
+          </h1>
+
+          <!-- Hover Image -->
+          <div class="">
+            <img
+              id="logo-img"
+              src="./assets/1000001344-01.jpeg"
+              alt="Sohan"
+              class="absolute left-30 -top-2 w-12 h-12 rounded-full opacity-0 transition-all duration-500 pointer-events-none"
+            />
+          </div>
         </div>
 
         <div class="hidden md:flex items-center space-x-5">
@@ -72,7 +87,7 @@
       </div>
     </nav>
 
-    <section class="bg-[#CFF0DC] py-20">
+    <section class="bg-[#bbdcc8] py-20">
       <div
         class="flex flex-col md:flex-row justify-center items-center text-center md:text-left space-y-6 md:space-y-0 md:space-x-6 max-w-6xl mx-auto"
       >
@@ -110,7 +125,7 @@
         </div>
       </div>
     </section>
-    <section class="mt-10 bg-[#CFF0DC] py-6 px-4 md:px-6 rounded-lg shadow-md">
+    <section class="bg-[#d9e9df] py-10 px-4 md:px-6 rounded-lg shadow-md">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
         <div class="col-span-1 md:col-span-3">
           <h1 class="text-xl font-bold mb-4">Categories</h1>

@@ -27,10 +27,12 @@ const fetchWithSpinner = async (url) => {
   showSpinner();
   try {
     const res = await fetch(url);
+    if (!res.ok) throw new Error("Network response was not ok");
     const data = await res.json();
     return data;
   } catch (error) {
     console.error("Error fetching data:", error);
+    alert("Failed to load data. Please try again later.");
     return null;
   } finally {
     hideSpinner();
@@ -45,9 +47,9 @@ const loadCategories = async () => {
   const data = await fetchWithSpinner(
     "https://openapi.programming-hero.com/api/categories"
   );
-  console.log("Categories API Response:", data);
+  if (!data) return;
 
-  const categories = data?.categories || [];
+  const categories = data.categories || [];
   const categoriesContainer = document.getElementById("categories");
   categoriesContainer.innerHTML = "";
 
@@ -81,9 +83,9 @@ const loadTreesByCategory = async (id) => {
     url = `https://openapi.programming-hero.com/api/category/${id}`;
 
   const data = await fetchWithSpinner(url);
-  console.log("Trees API Response:", data);
+  if (!data) return;
 
-  const trees = data?.plants || [];
+  const trees = data.plants || [];
   const treeContainer = document.getElementById("tree-cards");
   treeContainer.innerHTML = "";
 
@@ -91,10 +93,8 @@ const loadTreesByCategory = async (id) => {
     const card = document.createElement("div");
     card.className = "bg-white rounded p-2 shadow flex flex-col items-center";
 
-    // ✅ Tree description check (using description, not small_description)
-    const description = tree.description
-      ? tree.description
-      : "No description available";
+    const description = tree.description || "No description available";
+    const price = tree.price || 10;
 
     card.innerHTML = `
       <img src="${tree.image || "https://via.placeholder.com/150"}" alt="${
@@ -102,7 +102,7 @@ const loadTreesByCategory = async (id) => {
     }" class="w-32 h-32 object-cover mb-2"/>
       <h2 class="font-bold text-lg cursor-pointer">${tree.name}</h2>
       <p class="text-gray-500">${description}</p>
-      <p class="font-bold">$${tree.price || 10}</p>
+      <p class="font-bold" data-price="${price}">$${price}</p>
       <button class="add-to-cart bg-yellow-400 px-4 py-1 rounded mt-2 hover:bg-yellow-500">Add to Cart</button>
     `;
     treeContainer.appendChild(card);
@@ -130,14 +130,14 @@ const updateCart = () => {
 
   let total = 0;
   cart.forEach((item, index) => {
-    total += Number(item.price || 10);
+    total += Number(item.price);
 
     const li = document.createElement("li");
     li.className = "flex justify-between items-center bg-green-50 p-2 rounded";
     li.innerHTML = `
       <span>${item.name}</span>
       <span class="flex items-center space-x-2">
-        <span>$${item.price || 10}</span>
+        <span>$${item.price}</span>
         <button class="text-red-500 font-bold remove-btn" data-index="${index}">&times;</button>
       </span>
     `;
@@ -165,10 +165,7 @@ document.getElementById("tree-cards").addEventListener("click", (e) => {
   if (e.target.classList.contains("add-to-cart")) {
     const card = e.target.closest("div");
     const name = card.querySelector("h2").textContent;
-    const price =
-      Number(
-        card.querySelector("p:nth-of-type(2)").textContent.replace("$", "")
-      ) || 10;
+    const price = Number(card.querySelector("[data-price]").dataset.price);
 
     const treeItem = { name, price };
     cart.push(treeItem);
@@ -185,9 +182,8 @@ const modalContent = document.getElementById("modal-content");
 const closeModalBtn = document.getElementById("close-modal");
 
 const showTreeModal = (tree) => {
-  const description = tree.description
-    ? tree.description
-    : "No description available";
+  const description = tree.description || "No description available";
+  const price = tree.price || 10;
 
   modalContent.innerHTML = `
     <h2 class="font-bold text-xl mb-2">${tree.name}</h2>
@@ -195,7 +191,7 @@ const showTreeModal = (tree) => {
     tree.name
   }" class="w-full mb-2"/>
     <p>${description}</p>
-    <p class="font-bold mt-2">$${tree.price || 10}</p>
+    <p class="font-bold mt-2">$${price}</p>
   `;
   modal.classList.remove("hidden");
 };
@@ -213,5 +209,69 @@ document.getElementById("categories").addEventListener("click", (e) => {
   }
 });
 
+// ==============================
+// Step 6: Form Validation (Footer)
+// ==============================
+const donateForm = document.querySelector("footer form") || null;
+if (donateForm) {
+  donateForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = donateForm.querySelector('input[type="text"]').value.trim();
+    const email = donateForm.querySelector('input[type="email"]').value.trim();
+    const trees = donateForm.querySelector("select").value;
+
+    if (!name || !email || trees === "Number of Trees") {
+      alert("Please fill all fields correctly.");
+      return;
+    }
+
+    alert(`Thank you ${name}! You have donated ${trees} tree(s).`);
+    donateForm.reset();
+  });
+}
+document.getElementById("tree-cards").addEventListener("click", (e) => {
+  if (e.target.classList.contains("add-to-cart")) {
+    const card = e.target.closest("div");
+    const name = card.querySelector("h2").textContent;
+    const price =
+      Number(
+        card.querySelector("p:nth-of-type(2)").textContent.replace("$", "")
+      ) || 10;
+
+    const treeItem = { name, price };
+    cart.push(treeItem);
+    console.log("Added to cart:", treeItem);
+    updateCart();
+
+    // ✅ Alert added
+    alert(`🌳 "${name}" added to cart!`);
+  }
+});
+
 // Initialize App
 loadCategories();
+// Hamburger Menu Toggle
+const menuBtn = document.getElementById("menu-btn");
+const mobileMenu = document.getElementById("mobile-menu");
+
+menuBtn.addEventListener("click", () => {
+  mobileMenu.classList.toggle("hidden");
+});
+const logoName = document.getElementById("logo-name");
+const logoImg = document.getElementById("logo-img");
+
+logoName.addEventListener("mouseenter", () => {
+  // Zoom + jhilimili
+  logoName.classList.add("scale-125", "jhilimili");
+  // Show image
+  logoImg.classList.remove("opacity-0");
+  logoImg.classList.add("opacity-100");
+});
+
+logoName.addEventListener("mouseleave", () => {
+  // Remove zoom + jhilimili
+  logoName.classList.remove("scale-125", "jhilimili");
+  // Hide image
+  logoImg.classList.remove("opacity-100");
+  logoImg.classList.add("opacity-0");
+});

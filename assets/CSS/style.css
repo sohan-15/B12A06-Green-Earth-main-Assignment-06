@@ -1,0 +1,22 @@
+/* Optional: jhilimili effect (color change) */
+@keyframes shimmer {
+  0% {
+    color: #fff;
+  }
+  25% {
+    color: #facc15;
+  } /* yellow */
+  50% {
+    color: #34d399;
+  } /* green */
+  75% {
+    color: #60a5fa;
+  } /* blue */
+  100% {
+    color: #fff;
+  }
+}
+
+.jhilimili {
+  animation: shimmer 1s infinite;
+}
