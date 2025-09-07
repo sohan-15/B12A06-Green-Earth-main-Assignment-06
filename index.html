@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./CSS/style.css" />
     <link
       href="https://cdn.jsdelivr.net/npm/daisyui@5"
       rel="stylesheet"
       type="text/css"
     />
+    <link rel="stylesheet" href="./assets/CSS/style.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
@@ -25,14 +25,17 @@
         <div>
           <h1 class="text-white font-bold text-xl">Green Earth</h1>
         </div>
+
         <div class="hidden md:flex items-center space-x-5">
           <a class="text-white hover:text-yellow-400" href="">About</a>
           <a class="text-white hover:text-yellow-400" href="">Gallery</a>
           <a class="text-white hover:text-yellow-400" href="">Plant a Tree</a>
         </div>
+
         <div class="hidden md:block bg-yellow-400 rounded-3xl py-2 px-6">
           <button class="text-black font-bold">Plant a Tree</button>
         </div>
+
         <div class="md:hidden">
           <button id="menu-btn" class="text-white focus:outline-none">
             <svg
@@ -52,6 +55,7 @@
           </button>
         </div>
       </section>
+
       <div
         id="mobile-menu"
         class="hidden flex-col gap space-y-4 px-10 pb-4 md:hidden"
@@ -67,7 +71,8 @@
         </div>
       </div>
     </nav>
-    <section class="bg-[#CFF0DC] py-10">
+
+    <section class="bg-[#CFF0DC] py-20">
       <div
         class="flex flex-col md:flex-row justify-center items-center text-center md:text-left space-y-6 md:space-y-0 md:space-x-6 max-w-6xl mx-auto"
       >
@@ -78,6 +83,7 @@
             class="w-32 md:w-48 mx-auto md:mx-0"
           />
         </div>
+
         <div class="max-w-xl">
           <h1 class="text-3xl md:text-5xl font-bold mb-4">
             Plant a Tree, Grow a Future
@@ -94,6 +100,7 @@
             </button>
           </div>
         </div>
+
         <div>
           <img
             src="../assets/hero-leaf2.png"
@@ -103,15 +110,57 @@
         </div>
       </div>
     </section>
+    <section class="mt-10 bg-[#CFF0DC] py-6 px-4 md:px-6 rounded-lg shadow-md">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <div class="col-span-1 md:col-span-3">
+          <h1 class="text-xl font-bold mb-4">Categories</h1>
+          <div id="categories" class="flex flex-col gap-2"></div>
+        </div>
+        <div class="col-span-1 md:col-span-6">
+          <div id="spinner" class="hidden text-center my-4">
+            <i class="fas fa-spinner fa-spin text-4xl text-green-700"></i>
+          </div>
+
+          <div
+            id="tree-cards"
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+          ></div>
+        </div>
+
+        <div class="col-span-1 md:col-span-3 mt-6 md:mt-0">
+          <h1 class="text-xl font-bold mb-4">Your Cart</h1>
+          <div
+            id="cart-container"
+            class="bg-white p-4 rounded-lg shadow-md min-h-[200px]"
+          >
+            <p class="text-gray-500">No items added yet.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div
+      id="tree-modal"
+      class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4"
+    >
+      <div class="bg-white p-6 rounded-xl max-w-lg w-full relative">
+        <button
+          id="close-modal"
+          class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-2xl"
+        >
+          &times;
+        </button>
+        <div id="modal-content"></div>
+      </div>
+    </div>
 
     <section class="flex flex-col items-center justify-center text-center p-6">
       <h1 class="font-bold text-2xl mb-6">About the Campaign</h1>
-
       <div
         class="flex flex-col md:flex-row justify-center items-center max-w-4xl"
       >
         <div class="mb-6 md:mb-0 md:mr-6">
-          <img src="../assets/about.png" alt="" class="" />
+          <img src="../assets/about.png" alt="" />
         </div>
         <div class="text-left">
           <p>
@@ -151,6 +200,7 @@
         </div>
       </div>
     </section>
+
     <footer>
       <div class="flex items-center justify-center bg-green-800 py-40">
         <div
@@ -197,12 +247,14 @@
           </button>
         </div>
       </div>
+
       <div class="text-center items-center bg-green-900 py-7">
         <h1 class="text-white font-bold">
           © 2025 Green Earth. All Rights Reserved.
         </h1>
       </div>
     </footer>
+
     <script src="./index.js"></script>
   </body>
 </html>
