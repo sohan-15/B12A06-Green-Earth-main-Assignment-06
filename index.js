@@ -37,6 +37,9 @@ const fetchWithSpinner = async (url) => {
   }
 };
 
+// ==============================
+// Step 1: Load Categories
+// ==============================
 const loadCategories = async () => {
   console.log("Step 1: Loading categories...");
   const data = await fetchWithSpinner(
@@ -48,12 +51,14 @@ const loadCategories = async () => {
   const categoriesContainer = document.getElementById("categories");
   categoriesContainer.innerHTML = "";
 
+  // Add "All Trees" button
   const allBtn = document.createElement("button");
   allBtn.textContent = "All Trees";
   allBtn.className = "category-btn bg-green-200 p-2 rounded";
   allBtn.dataset.id = "all";
   categoriesContainer.appendChild(allBtn);
 
+  // Dynamic category buttons
   categories.forEach((cat) => {
     const btn = document.createElement("button");
     btn.textContent = cat.category_name;
@@ -66,6 +71,9 @@ const loadCategories = async () => {
   loadTreesByCategory("all");
 };
 
+// ==============================
+// Step 2: Load Trees by Category
+// ==============================
 const loadTreesByCategory = async (id) => {
   console.log("Step 2: Loading trees for category:", id);
   let url = "https://openapi.programming-hero.com/api/plants";
@@ -83,16 +91,20 @@ const loadTreesByCategory = async (id) => {
     const card = document.createElement("div");
     card.className = "bg-white rounded p-2 shadow flex flex-col items-center";
 
+    // ✅ Tree description check (using description, not small_description)
+    const description = tree.description
+      ? tree.description
+      : "No description available";
+
     card.innerHTML = `
       <img src="${tree.image || "https://via.placeholder.com/150"}" alt="${
       tree.name
     }" class="w-32 h-32 object-cover mb-2"/>
       <h2 class="font-bold text-lg cursor-pointer">${tree.name}</h2>
-      <p class="text-gray-500">${tree.small_description || "No description"}</p>
+      <p class="text-gray-500">${description}</p>
       <p class="font-bold">$${tree.price || 10}</p>
       <button class="add-to-cart bg-yellow-400 px-4 py-1 rounded mt-2 hover:bg-yellow-500">Add to Cart</button>
     `;
-
     treeContainer.appendChild(card);
 
     // Modal click
@@ -100,6 +112,9 @@ const loadTreesByCategory = async (id) => {
   });
 };
 
+// ==============================
+// Step 3: Cart Functionality
+// ==============================
 let cart = [];
 const updateCart = () => {
   const cartContainer = document.getElementById("cart-container");
@@ -162,17 +177,24 @@ document.getElementById("tree-cards").addEventListener("click", (e) => {
   }
 });
 
+// ==============================
+// Step 4: Modal Functionality
+// ==============================
 const modal = document.getElementById("tree-modal");
 const modalContent = document.getElementById("modal-content");
 const closeModalBtn = document.getElementById("close-modal");
 
 const showTreeModal = (tree) => {
+  const description = tree.description
+    ? tree.description
+    : "No description available";
+
   modalContent.innerHTML = `
     <h2 class="font-bold text-xl mb-2">${tree.name}</h2>
     <img src="${tree.image || "https://via.placeholder.com/150"}" alt="${
     tree.name
   }" class="w-full mb-2"/>
-    <p>${tree.small_description || "No description available"}</p>
+    <p>${description}</p>
     <p class="font-bold mt-2">$${tree.price || 10}</p>
   `;
   modal.classList.remove("hidden");
@@ -180,6 +202,9 @@ const showTreeModal = (tree) => {
 
 closeModalBtn.onclick = () => modal.classList.add("hidden");
 
+// ==============================
+// Step 5: Category Click Events
+// ==============================
 document.getElementById("categories").addEventListener("click", (e) => {
   if (e.target.classList.contains("category-btn")) {
     const id = e.target.dataset.id;
@@ -187,4 +212,6 @@ document.getElementById("categories").addEventListener("click", (e) => {
     loadTreesByCategory(id);
   }
 });
+
+// Initialize App
 loadCategories();
