@@ -153,12 +153,17 @@ document.getElementById("tree-cards").addEventListener("click", (e) => {
   if (e.target.classList.contains("add-to-cart")) {
     const card = e.target.closest("div");
     const name = card.querySelector("h2").textContent;
-    const price = Number(card.querySelector("[data-price]").dataset.price);
+    const price =
+      Number(
+        card.querySelector("p:nth-of-type(2)").textContent.replace("$", "")
+      ) || 10;
 
     const treeItem = { name, price };
     cart.push(treeItem);
     console.log("Added to cart:", treeItem);
     updateCart();
+
+    alert(`🌳 "${name}" added to cart!`);
   }
 });
 
@@ -208,27 +213,9 @@ if (donateForm) {
     donateForm.reset();
   });
 }
-document.getElementById("tree-cards").addEventListener("click", (e) => {
-  if (e.target.classList.contains("add-to-cart")) {
-    const card = e.target.closest("div");
-    const name = card.querySelector("h2").textContent;
-    const price =
-      Number(
-        card.querySelector("p:nth-of-type(2)").textContent.replace("$", "")
-      ) || 10;
 
-    const treeItem = { name, price };
-    cart.push(treeItem);
-    console.log("Added to cart:", treeItem);
-    updateCart();
-
-    alert(`🌳 "${name}" added to cart!`);
-  }
-});
-
-// Initialize App
 loadCategories();
-// Hamburger Menu Toggle
+
 const menuBtn = document.getElementById("menu-btn");
 const mobileMenu = document.getElementById("mobile-menu");
 
@@ -239,17 +226,15 @@ const logoName = document.getElementById("logo-name");
 const logoImg = document.getElementById("logo-img");
 
 logoName.addEventListener("mouseenter", () => {
-  // Zoom + jhilimili
   logoName.classList.add("scale-125", "jhilimili");
-  // Show image
+
   logoImg.classList.remove("opacity-0");
   logoImg.classList.add("opacity-100");
 });
 
 logoName.addEventListener("mouseleave", () => {
-  // Remove zoom + jhilimili
   logoName.classList.remove("scale-125", "jhilimili");
-  // Hide image
+
   logoImg.classList.remove("opacity-100");
   logoImg.classList.add("opacity-0");
 });
